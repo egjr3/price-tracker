@@ -39,14 +39,14 @@ def search(product_name):
 
 if __name__ == '__main__':
 
-    product_search = input('What''s the product you want to search for in <backmarket.es>? <<"q" to exit>>')
+    product_search = input('What\'s the product you want to search for in <backmarket.es>? <<"q" to exit>>')
     if product_search == 'q':
         sys.exit(0)
 
     list_products = search(product_search)
 
     while len(list_products) == 0:
-        print(f'There were no products found matchin "{product_search}", try again.')
+        print(f'There were no products found matching "{product_search}", try again.')
         product_search = input('What''s the product you want to search for in <backmarket.es>? <<"q" to exit>>')
         list_products = search(product_search)
 
