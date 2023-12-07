@@ -17,53 +17,56 @@ def search(product_name):
 
     products_grid = soup.find('div', {'class': 'grid'})
 
-    try:
-        for product in products_grid.findAll('a'):
-            name = product.find('h2').text.strip().replace('\n', '').replace('\r', '')
-            link = product['href'].strip()
-            price = product.find('div', {'data-qa': 'prices'}).text.strip()
+    for product in products_grid.findAll('a'):
+        name = product.find('h2').text.strip().replace(
+            '\n', '').replace('\r', '')
+        link = product['href'].strip()
+        price = product.find('span', {'data-qa': 'prices'}).text.strip()
 
-            dict_product = {
-                'name': name,
-                'link': 'https://www.backmarket.es' + link,
-                'price': price
-            }
+        dict_product = {
+            'name': name,
+            'link': 'https://www.backmarket.es' + link,
+            'price': price
+        }
 
-            products_list.append(dict_product)
+        products_list.append(dict_product)
 
-        return products_list
-
-    except AttributeError:
-        return products_list
+    return products_list
 
 
 if __name__ == '__main__':
 
-    product_search = input('What\'s the product you want to search for in <backmarket.es>? <<"q" to exit>>')
+    product_search = input(
+        'What\'s the product you want to search for in <backmarket.es>? <<"q" to exit>>')
     if product_search == 'q':
         sys.exit(0)
 
     list_products = search(product_search)
 
     while len(list_products) == 0:
-        print(f'There were no products found matching "{product_search}", try again.')
-        product_search = input('What''s the product you want to search for in <backmarket.es>? <<"q" to exit>>')
+        print(
+            f'There were no products found matching "{product_search}", try again.')
+        product_search = input(
+            'What''s the product you want to search for in <backmarket.es>? <<"q" to exit>>')
         list_products = search(product_search)
 
     while True:
-        output_file_extension = input('Choose an output file extension (txt or csv). <<"q" to exit>>')
+        output_file_extension = input(
+            'Choose an output file extension (txt or csv). <<"q" to exit>>')
         if output_file_extension == 'q':
             sys.exit(0)
         if output_file_extension == 'txt' or output_file_extension == 'csv':
             break
 
-    output_file = product_search.replace(' ', '_') + '_' + date.today().strftime("%d-%m-%Y") + f'.{output_file_extension}'
+    output_file = product_search.replace(
+        ' ', '_') + '_' + date.today().strftime("%d-%m-%Y") + f'.{output_file_extension}'
 
     if output_file_extension == 'txt':
         with open(output_file, 'w', encoding="utf-8") as file:
             for line in list_products:
                 product = 'Name: {}\nLink: {}\nPrice: {}\n\n'
-                product = product.format(line['name'], line['link'], line['price'])
+                product = product.format(
+                    line['name'], line['link'], line['price'])
                 file.write(product)
 
     else:
